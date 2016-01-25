@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+
+        <EditText
+            android:id="@+id/number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Phone Number"
+            android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/addno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Alert Number"
+        android:background="#3f85f4"
+        android:textColor="#ffffff"
+        android:layout_marginTop="34dp" />
+
+        <EditText
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message"
+            android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/chmes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Updadte Message"
+        android:background="#3f85f4"
+        android:textColor="#ffffff"
+        android:layout_marginTop="34dp" />
+
+</LinearLayout>
