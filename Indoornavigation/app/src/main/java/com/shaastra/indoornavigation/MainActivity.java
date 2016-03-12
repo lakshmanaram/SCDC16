@@ -42,9 +42,11 @@ public class MainActivity extends Activity {
     BluetoothDevice mDevice;
     OutputStream mmOutStream;
     InputStream mmInStream;
+    int times = 0;
     String message;
+    String source, dest, current_Address = "hey";
     ArrayList<String> speechResult = new ArrayList<>();
-    List<String> possiblities = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "Stairs", "Entrance", "Exit");
+    List<String> possiblities = Arrays.asList("A", "b", "c", "D", "E", "F", "G", "H", "I", "Stairs", "Entrance", "Exit");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +60,16 @@ public class MainActivity extends Activity {
                 String current = Speak_Button.getText().toString();
                 if (current.equals("Start Navigation")) {
                     promptSpeechInput("Navigate to? ");
+                    navtext.setText("");
                     String text = "not found";
-                    while(text.equals("not found"))
-                    {
+
                         for(int i=0;i<speechResult.size();i++){
                             for(int j = 0;j < possiblities.size();j++)
                                 if(speechResult.get(i).equalsIgnoreCase(possiblities.get(j)))
                                     text = possiblities.get(j);
                         }
-                        if(text.equals("not found"))
-                            promptSpeechInput("Didn't catch that! Please Retry");
-                    }
-                    sendDataToPairedDevice("N"+ String.valueOf(possiblities.indexOf(text)),mDevice);
+                    Toast.makeText(getApplicationContext(),speechResult.toString(),Toast.LENGTH_SHORT).show();
+                    //sendDataToPairedDevice("N" + String.valueOf(possiblities.indexOf(text)), mDevice);
                     Speak_Button.setText("Facing ?");
                 } else if (current.equals("Facing ?")) {
                     promptSpeechInput("Facing?");
@@ -84,12 +84,53 @@ public class MainActivity extends Activity {
                         if(text.equals("not found"))
                             promptSpeechInput("Didn't catch that! Please Retry");
                     }
-                    sendDataToPairedDevice("F" + String.valueOf(possiblities.indexOf(text)), mDevice);
+                   // sendDataToPairedDevice("F" + String.valueOf(possiblities.indexOf(text)), mDevice);
                     Speak_Button.setText("Done ?");
                 } else if (current.equals("Done ?")) {
-                    speak_this("You have reached your destination");
-                    Speak_Button.setText("Start Navigation");
-                    navtext.setText("");
+                    String hello = "";
+                        String writeMessage = "ARBRCKRDRLA";
+                        String result = "";
+                        if(times == 0) {
+                            source = "A";
+                            dest = "B";
+                            times++;
+                            current_Address = "ARB";
+                        }else if(times == 1){
+                            source = "A";
+                            dest = "C";
+                            times++;
+                            current_Address = "ARBRC";
+                        }else{
+                            source = "B";
+                            dest = "K";
+                            times++;
+                            current_Address = "BRCK";
+                        }
+/*
+                        for (int i = writeMessage.indexOf(source); ; i++, i %= writeMessage.length()) {
+                            if (i == writeMessage.indexOf(dest)) {
+                                break;
+                            } else
+                                result += writeMessage.toCharArray()[i];
+                        }
+                        current_Address += result;
+                        */
+                    hello += "Turn to your right!\n";
+                    speak_this("Turn to your right!");
+                    String s = current_Address;
+                    for(int i=0;i<s.length();i++) {
+                        if (s.toCharArray()[i] == 'R') {
+                            hello += "Take a right turn\n";
+                            speak_this("Take a right turn");
+                        } else {
+                            navtext.setText("Cross room " + s.toCharArray()[i]);
+                            speak_this("Cross room " + s.toCharArray()[i]);
+                        }
+                    }
+                        hello += "You have reached your destination. It is to your left";
+                        speak_this("You have reached your destination. It is to your left");
+                        Speak_Button.setText("Start Navigation");
+                        navtext.setText(hello);
                 }
             }
         });
@@ -144,6 +185,7 @@ public class MainActivity extends Activity {
 
         }
     }
+
 
     private void sendDataToPairedDevice(String message, BluetoothDevice device) {
         byte[] toSend = message.getBytes();
